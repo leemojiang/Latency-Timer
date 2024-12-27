@@ -143,27 +143,52 @@
     <script>
         // Timer
         const timerElement = document.getElementById('timer');
+        const dots = document.querySelectorAll('.dot');
+        let isPaused = false;
         setInterval(() => {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            const ms = now.getMilliseconds()
+            // 进行向下取整除法 
+            const idx  = Math.floor(ms / 10) % dots.length;
             const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-            timerElement.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+            if (!isPaused){
+                timerElement.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+                
+                if (idx != 0) {
+                    for (let i = 0; i <= idx; i++) {
+                        dots[i].style.opacity = 0;
+                    }
+                }else{
+                    dots.forEach(dot => dot.style.opacity = 1);
+                }
+            }
+            
         }, 1);
 
-        // Blinking dots
-        const dots = document.querySelectorAll('.dot');
-        let currentDot = 0;
-        setInterval(() => {
-            if (currentDot < dots.length) {
-                dots[currentDot].style.opacity = 0;
-                currentDot++;
-            } else {
-                dots.forEach(dot => dot.style.opacity = 1);
-                currentDot = 0;
+        // // Blinking dots
+        // 
+        // let currentDot = 0;
+        // setInterval(() => {
+        //     if (currentDot < dots.length) {
+        //         dots[currentDot].style.opacity = 0;
+        //         currentDot++;
+        //     } else {
+        //         dots.forEach(dot => dot.style.opacity = 1);
+        //         currentDot = 0;
+        //     }
+        // }, 10);
+
+        // Pause and resume on spacebar press 
+        document.addEventListener('keydown', (event) => { 
+            if (event.code === 'Space') { 
+                isPaused = ! isPaused
             }
-        }, 10);
+        });
+
     </script>
 </body>
 </html>
