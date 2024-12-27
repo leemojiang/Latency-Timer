@@ -153,20 +153,20 @@
 
             const ms = now.getMilliseconds()
             // 进行向下取整除法 
-            const idx  = Math.floor(ms / 10) % dots.length;
+            const idx  = Math.floor(ms / 10) % dots.length; // 0 - 99
             const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
             if (!isPaused){
                 timerElement.textContent = `${hours}:${minutes}:${seconds}.${milliseconds}`;
                 
-                if (idx != 0) {
-                    for (let i = 0; i <= idx; i++) {
+                for (let i = 0; i < dots.length; i++) {
+                    if(i <= idx){
                         dots[i].style.opacity = 0;
+                    }else{
+                        dots[i].style.opacity = 1;
                     }
-                }else{
-                    dots.forEach(dot => dot.style.opacity = 1);
+                    
                 }
             }
-            
         }, 1);
 
         // // Blinking dots
